@@ -75,7 +75,7 @@ spec:
         worker: "true"
       containers:
       - name: ollama-webui
-        image: ollama-webui:latest
+        image: ghcr.io/open-webui/open-webui:main
         ports:
         - containerPort: 3000
           name: webui-http
