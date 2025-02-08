@@ -31,7 +31,6 @@ spec:
         - mountPath: /root/.ollama
           name: ollama
         tty: true
-        restartPolicy: Always
       volumes:
       - name: ollama
         persistentVolumeClaim:
@@ -86,7 +85,6 @@ spec:
           value: "http://ollama:11434/api"
         extraHosts:
         - host.docker.internal:host-gateway
-        restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
