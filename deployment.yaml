@@ -60,3 +60,61 @@ spec:
   selector:
     app: ollama
   type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ollama-webui
+    app.kubernetes.io/instance: ollama-webui
+  name: ollama-webui
+  namespace: ollama
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ollama-webui
+  template:
+    metadata:
+      labels:
+        app: ollama-webui
+    spec:
+      nodeSelector:
+        worker: "true"
+      containers:
+      - name: ollama-webui
+        image: ollama-webui:latest
+        ports:
+        - containerPort: 8080
+          name: webui-http
+          protocol: TCP
+        env:
+        - name: OLLAMA_API_BASE_URL
+          value: "http://ollama:11434/api"
+        extraHosts:
+        - host.docker.internal:host-gateway
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+        restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ollama-webui
+  name: ollama-webui
+  namespace: ollama
+spec:
+  ports:
+  - name: webui-http
+    port: 3000
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: ollama-webui
+  type: LoadBalancer
