@@ -101,5 +101,4 @@ spec:
     targetPort: 3000
   selector:
     app: ollama-webui
-  loadBalancerIP: 10.1.40.24
-  type: LoadBalancer
+  type: ClusterIP
