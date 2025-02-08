@@ -32,13 +32,6 @@ spec:
           name: ollama
         tty: true
         restartPolicy: Always
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "500m"
-          limits:
-            memory: "1Gi"
-            cpu: "1"
       volumes:
       - name: ollama
         persistentVolumeClaim:
@@ -59,7 +52,7 @@ spec:
     targetPort: 11434
   selector:
     app: ollama
-  type: LoadBalancer
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -93,13 +86,6 @@ spec:
           value: "http://ollama:11434/api"
         extraHosts:
         - host.docker.internal:host-gateway
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "500m"
-          limits:
-            memory: "1Gi"
-            cpu: "1"
         restartPolicy: Always
 ---
 apiVersion: v1
@@ -117,4 +103,4 @@ spec:
     targetPort: 8080
   selector:
     app: ollama-webui
-  type: LoadBalancer
+  type: ClusterIP
